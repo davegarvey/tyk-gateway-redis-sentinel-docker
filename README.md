@@ -15,6 +15,8 @@ The HAProxy monitors the status of the Redis instances and will automatically ta
         docker-compose up
    
    This will start outputting the logs into the terminal window.
+   
+   The Gateway is configured to map port 8080 to the host, so make sure you're not already running a container on this port.
 
 2. In a new terminal window, update the scripts to be executable:
 
@@ -25,6 +27,8 @@ The HAProxy monitors the status of the Redis instances and will automatically ta
         ./bootstrap.sh
    
    This script configures the Redis Sentinel instances and creates a test API key which can be used to check if the API Gateway is working ok.
+   
+   The Sentinal instances are configures to mark a host as failed after 5 seconds and have a failover timeout of 30 seconds. The 3 instances require a quorum of 2 in order to failover a failed master.
 
 ## Using the install
 
@@ -34,7 +38,7 @@ Once the install is bootstrapped you can try the following sequence of commands 
 
         curl http://localhost:8080/tyk-api-test/get -H 'authorization: testkey'
 
-    This will return a typical HTTPbin response
+    This should return a typical HTTPbin JSON response.
 
 2. Cause a failover:
 
