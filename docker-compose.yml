@@ -1,0 +1,67 @@
+version: '3.3'
+services:
+  redis-a:
+    image: redis
+    networks:
+      - redis-sentinel-network
+  redis-b:
+    image: redis
+    networks:
+      - redis-sentinel-network
+    depends_on:
+      - redis-a
+    command: [ "redis-server", "--replicaof", "redis-a", "6379" ]
+  redis-c:
+    image: redis
+    networks:
+      - redis-sentinel-network
+    depends_on:
+      - redis-a
+    command: [ "redis-server", "--replicaof", "redis-a", "6379" ]
+  redis-sentinel1:
+    image: davidgarvey/redis-sentinel
+    networks:
+      - redis-sentinel-network
+    depends_on:
+      - redis-a
+      - redis-b
+      - redis-c
+  redis-sentinel2:
+    image: davidgarvey/redis-sentinel
+    networks:
+      - redis-sentinel-network
+    depends_on:
+      - redis-a
+      - redis-b
+      - redis-c
+  redis-sentinel3:
+    image: davidgarvey/redis-sentinel
+    networks:
+      - redis-sentinel-network
+    depends_on:
+      - redis-a
+      - redis-b
+      - redis-c
+  haproxy:
+    image: haproxy:alpine
+    networks: 
+      - redis-sentinel-network
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    depends_on:
+      - redis-a
+      - redis-b
+      - redis-c
+  tyk-gateway:
+    image: tykio/tyk-gateway
+    networks:
+      - redis-sentinel-network
+    ports:
+      - 8080:8080
+    volumes:
+      - ./tyk.conf:/opt/tyk-gateway/tyk.conf
+    depends_on:
+      - haproxy
+
+networks:
+  redis-sentinel-network:
