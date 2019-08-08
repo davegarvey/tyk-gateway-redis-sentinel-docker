@@ -32,13 +32,13 @@ Once the install is bootstrapped you can try the following sequence of commands 
 
 1. Test that all is ok to begin with:
 
-    curl http://localhost:8080/tyk-api-test/get -H 'authorization: testkey'
+        curl http://localhost:8080/tyk-api-test/get -H 'authorization: testkey'
 
     This will return a typical HTTPbin response
 
 2. Cause a failover:
 
-    ./failover.sh
+        ./failover.sh
 
     This will instruct the 'redis-a' instance, which is the initial master, to not response for 30 seconds.
 
@@ -50,6 +50,6 @@ Once the install is bootstrapped you can try the following sequence of commands 
 
 3. Check that the API request still works:
 
-    curl http://localhost:8080/tyk-api-test/get -H 'authorization: testkey'
+        curl http://localhost:8080/tyk-api-test/get -H 'authorization: testkey'
 
     When the replica which became the master failed over it had a copy of the master data, so this enables the Gateway to continue authenticating API requests using the 'testkey'.
