@@ -14,7 +14,7 @@ The HAProxy monitors the status of the Redis instances and will automatically ta
 
         docker-compose up
    
-   This will start outputting the logs into the terminal window
+   This will start outputting the logs into the terminal window.
 
 2. In a new terminal window, update the scripts to be executable:
 
