@@ -57,3 +57,9 @@ Once the install is bootstrapped you can try the following sequence of commands 
         curl http://localhost:8080/tyk-api-test/get -H 'authorization: testkey'
 
     When the replica which became the master failed over it had a copy of the master data, so this enables the Gateway to continue authenticating API requests using the 'testkey'.
+    
+### Failover script
+
+The `failover.sh` script is used to conveniently cause a Redis instance to be marked as failing. By default it will target instance 'a', but can be used to target other instances by passing a parameter e.g. `./failover.sh b` which will target the 'b' instance.
+
+The script instructs the Redis instance to sleep for 30 seconds which is enough time for the Sentinels to mark it as failed and failover to occur.
