@@ -40,11 +40,11 @@ Once the install is bootstrapped you can try the following sequence of commands 
 
         ./failover.sh
 
-    This will instruct the 'redis-a' instance, which is the initial master, to not response for 30 seconds.
+    This will instruct the 'redis-a' instance, which is the initial master, to not respond for 30 seconds.
 
-    The Sentinels will detect that the master has failed and will failover to one of the other instances.
+    The Sentinels will detect that the master has failed and will failover to one of the replicas.
 
-    The HA proxy will detect that a new master is available and will direct the Gateway's Redis connection.
+    The HA proxy will detect that a new master Redis is available and will direct the Gateway's Redis connection to the new master.
 
     The failed Redis will return after 30 seconds and will be reassigned as a replica.
 
